@@ -1,14 +1,17 @@
 package ru.footmade.libnot;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class NegationUtils {
 
     private static final Boolean TRUE = Boolean.valueOf(true);
     private static final Boolean FALSE = Boolean.valueOf(false);
 
-    private static final HashMap cache;
+    private static final Map<Boolean, Boolean> cache;
 
     static {
-        cache = new HashMap();
+        cache = new HashMap<>();
     }
 
     /**
