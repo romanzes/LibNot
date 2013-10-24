@@ -10,8 +10,8 @@ public class NegationUtils {
      * @param var a value which should be negated. Must be either true or false.
      * @return true, if an argument is false; false, if an argument is true.
      */
-    public static boolean not(boolean var) {
-        Boolean varObj = Boolean.valueOf(var);
+    public static boolean not(boolean var) throws IllegalArgumentException {
+        final Boolean varObj = Boolean.valueOf(var);
         if (varObj.equals(TRUE)) {
             return false;
         } else if (varObj.equals(FALSE)) {
