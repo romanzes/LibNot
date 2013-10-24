@@ -23,17 +23,19 @@ public class NegationUtils {
         final Boolean varObj = Boolean.valueOf(var);
 
         if (cache.containsKey(varObj)) {
-            return cache.get(varObj);
+            return cache.get(varObj).booleanValue();
         }
 
+        Boolean result;
         if (varObj.equals(TRUE)) {
-            cache.put(varObj, false);
-            return false;
+            result = Boolean.valueOf(FALSE.booleanValue());
         } else if (varObj.equals(FALSE)) {
-            cache.put(varObj, true);
-            return true;
+            result = Boolean.valueOf(TRUE.booleanValue());
         } else {
             throw new IllegalArgumentException();
         }
+        
+        cache.put(varObj, result);
+        return result.booleanValue();
     }
 }
