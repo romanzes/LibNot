@@ -15,6 +15,10 @@ public class CachedNegationStrategy extends DefaultNegationStrategy {
         _cache = newCache;
     }
     
+    public BooleanCache getCache() {
+        return _cache;
+    }
+    
     @Override
     public boolean not(boolean var) {
         if (_cache == null) {

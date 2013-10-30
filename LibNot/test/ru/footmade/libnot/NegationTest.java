@@ -48,6 +48,37 @@ public class NegationTest {
         }
     }
     
+    /**
+     * Two strategies are run in parallel and share the same cache
+     */
+    @Test
+    public void parallelTest() {
+        final CachedNegationStrategy strategy1 = new CachedNegationStrategy();
+        final CachedNegationStrategy strategy2 = new CachedNegationStrategy(strategy1.getCache());
+        Thread thread1 = new Thread() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 1000; i++) {
+                    assertEquals("Not true must be false", false, strategy1.not(true));
+                }
+            }
+        };
+        Thread thread2 = new Thread() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 1000; i++) {
+                    assertEquals("Not false must be true", true, strategy2.not(false));
+                }
+            }
+        };
+        thread1.start();
+        thread2.start();
+        try {
+            thread1.join();
+            thread2.join();
+        } catch (InterruptedException ex) {}
+    }
+    
     private class FlagHolder {
         private boolean _flag;
         
