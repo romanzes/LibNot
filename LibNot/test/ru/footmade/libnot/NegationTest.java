@@ -8,7 +8,8 @@ import org.junit.BeforeClass;
 
 public class NegationTest {
     private static Random rand;
-    private static AbstractNegationStrategy defaultStrategy, cachedStrategy;
+    private static DefaultNegationStrategy defaultStrategy;
+    private static CachedNegationStrategy cachedStrategy;
 
     @BeforeClass
     public static void testSetup() {
@@ -33,6 +34,7 @@ public class NegationTest {
         testCase(cachedStrategy, true, false, true);
         testCase(cachedStrategy, true, false, false);
         testCase(cachedStrategy, false, true, true);
+        cachedStrategy.setCache(null);
         testCase(cachedStrategy, false, true, false);
     }
     

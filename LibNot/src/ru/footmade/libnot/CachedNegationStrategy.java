@@ -1,26 +1,37 @@
 package ru.footmade.libnot;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class CachedNegationStrategy extends DefaultNegationStrategy {
-    private static final Map<Boolean, Boolean> cache;
-
-    static {
-        cache = new HashMap<>();
+    private BooleanCache _cache;
+    
+    public CachedNegationStrategy() {
+        this(new DefaultBooleanCache());
+    }
+    
+    public CachedNegationStrategy(BooleanCache cache) {
+        _cache = cache;
+    }
+    
+    public void setCache(BooleanCache newCache) {
+        _cache = newCache;
     }
     
     @Override
     public boolean not(boolean var) {
-        final Boolean varObj = Boolean.valueOf(var);
+        if (_cache == null) {
+            return super.not(var);
+        } else if (_cache != null) {
+            final Boolean varObj = Boolean.valueOf(var);
 
-        if (cache.containsKey(varObj)) {
-            return cache.get(varObj).booleanValue();
+            if (_cache.containsKey(varObj)) {
+                return _cache.get(varObj).booleanValue();
+            }
+
+            Boolean result = super.not(var);
+
+            _cache.put(varObj, result);
+            return result.booleanValue();
+        } else {
+            throw new IllegalArgumentException("Schrodinger's cache!");
         }
-
-        Boolean result = super.not(var);
-        
-        cache.put(varObj, result);
-        return result.booleanValue();
     }
 }
