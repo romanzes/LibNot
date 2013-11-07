@@ -8,14 +8,14 @@ import org.junit.BeforeClass;
 
 public class NegationTest {
     private static Random rand;
-    private static DefaultNegationStrategy defaultStrategy;
-    private static CachedNegationStrategy cachedStrategy;
+    private static AbstractNegationStrategy defaultStrategy, cachedStrategy;
 
     @BeforeClass
     public static void testSetup() {
         rand = new Random();
-        defaultStrategy = new DefaultNegationStrategy();
-        cachedStrategy = new CachedNegationStrategy();
+        NegationStrategyFactory factory = new NegationStrategyFactory();
+        defaultStrategy = factory.createNegationStrategy();
+        cachedStrategy = factory.createNegationStrategy(NegationStrategyFactory.FLAG_CACHED);
     }
 
     @AfterClass
@@ -27,6 +27,8 @@ public class NegationTest {
     
     @Test
     public void strictTest() {
+        assertTrue(defaultStrategy instanceof DefaultNegationStrategy);
+        assertTrue(cachedStrategy instanceof CachedNegationStrategy);
         testCase(defaultStrategy, true, false, true);
         testCase(defaultStrategy, true, false, false);
         testCase(defaultStrategy, false, true, true);
@@ -34,7 +36,7 @@ public class NegationTest {
         testCase(cachedStrategy, true, false, true);
         testCase(cachedStrategy, true, false, false);
         testCase(cachedStrategy, false, true, true);
-        cachedStrategy.setCache(null);
+        ((CachedNegationStrategy) cachedStrategy).setCache(null);
         testCase(cachedStrategy, false, true, false);
     }
     
